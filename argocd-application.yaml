@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/michi-1221/workshop-gitops-sample.git
+    targetRevision: main
+    path: manifests/nginx
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true      # Git から削除されたリソースをクラスタからも削除
+      selfHeal: false   # 手動変更を自動で元に戻す
